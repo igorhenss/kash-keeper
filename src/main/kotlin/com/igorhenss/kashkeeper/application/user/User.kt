@@ -2,23 +2,30 @@ package com.igorhenss.kashkeeper.application.user
 
 import com.igorhenss.kashkeeper.application.balance.Balance
 import org.hibernate.Hibernate
+import java.math.BigDecimal
 import java.util.*
 import javax.persistence.*
 
 @Entity
 @Table(name = "user")
-data class User(
+class User(
     @Column(name = "username", nullable = false, unique = true)
     val username: String,
     @Column(name = "surname", nullable = false)
     var surname: String,
-    @OneToOne(mappedBy = "user", cascade = [CascadeType.ALL])
-    @PrimaryKeyJoinColumn
-    val balance: Balance,
+    balance: BigDecimal
 ) {
     @Id
     @Column(name = "id", nullable = false, unique = true)
     val id: UUID = UUID.randomUUID()
+
+    @OneToOne(mappedBy = "user", cascade = [CascadeType.ALL])
+    @PrimaryKeyJoinColumn
+    val balance: Balance
+
+    init {
+        this.balance = Balance(this, balance)
+    }
 
     fun updateSurname(surname: String) {
         this.surname = surname

@@ -1,14 +1,12 @@
 package com.igorhenss.kashkeeper.application.user
 
-import com.igorhenss.kashkeeper.application.balance.Balance
-import com.nhaarman.mockitokotlin2.mock
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import java.math.BigDecimal
 
 internal class UserTest {
 
-    private val balance = mock<Balance>()
-    private val user = User("TestUser", "Thusser", balance)
+    private val user = User("TestUser", "Thusser", BigDecimal.TEN)
 
     @Test
     fun testToString() {
@@ -17,9 +15,7 @@ internal class UserTest {
 
     @Test
     fun testEqualsByUsername() {
-        val differentBalance = mock<Balance>()
-        val differentUserWithSameUsername = User("TestUser", "Surname", differentBalance)
-
+        val differentUserWithSameUsername = User("TestUser", "Surname", BigDecimal.ONE)
         assertThat(user).isEqualTo(differentUserWithSameUsername)
     }
 
