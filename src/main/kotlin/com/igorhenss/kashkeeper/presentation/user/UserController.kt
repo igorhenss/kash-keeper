@@ -13,15 +13,15 @@ class UserController(private val service: UserService) {
     fun getAll() = service.getAll()
 
     @GetMapping("/{id}")
-    fun getById(id: UUID) = service.getById(id)
+    fun getById(@PathVariable("id") id: UUID) = service.getById(id)
 
     @PostMapping
-    fun createUser(body: UserMutationDTO) = service.create(body)
+    fun create(@RequestBody body: UserMutationDTO) = service.create(body)
 
     @PutMapping("/{id}")
-    fun updateUser(id: UUID, body: UserMutationDTO) = service.update(id, body)
+    fun update(@PathVariable("id") id: UUID, @RequestBody body: UserMutationDTO) = service.update(id, body)
 
     @DeleteMapping("/{id}")
-    fun deleteUser(id: UUID) = service.delete(id)
+    fun delete(@PathVariable("id") id: UUID) = service.delete(id)
 
 }

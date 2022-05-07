@@ -7,23 +7,26 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
-@Table(name = "user")
+@Table(name = "\"user\"")
 class User(
-    @Column(name = "username", nullable = false, unique = true)
-    val username: String,
-    @Column(name = "surname", nullable = false)
-    var surname: String,
+    username: String,
+    surname: String,
     balance: BigDecimal
 ) {
     @Id
     @Column(name = "id", nullable = false, unique = true)
     val id: UUID = UUID.randomUUID()
-
+    @Column(name = "username", length = 20, nullable = false, unique = true)
+    val username: String
+    @Column(name = "surname", length = 20, nullable = false)
+    var surname: String
     @OneToOne(mappedBy = "user", cascade = [CascadeType.ALL])
     @PrimaryKeyJoinColumn
     val balance: Balance
 
     init {
+        this.username = username.uppercase()
+        this.surname = surname
         this.balance = Balance(this, balance)
     }
 

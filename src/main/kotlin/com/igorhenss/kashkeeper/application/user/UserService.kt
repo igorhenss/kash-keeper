@@ -17,6 +17,7 @@ class UserService(private val adapter: UserAdapter, private val repository: User
     }
 
     fun getAll() = repository.findAll()
+        .map { adapter.fromEntity(it) }
 
     fun getById(id: UUID) = adapter.fromEntity(fetchById(id))
 

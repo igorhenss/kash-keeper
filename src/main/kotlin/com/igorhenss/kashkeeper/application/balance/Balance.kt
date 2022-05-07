@@ -9,17 +9,24 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "balance")
-data class Balance(
-    @MapsId
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    val user: User,
-    @Column(name = "current_value", nullable = false)
-    var currentValue: BigDecimal = BigDecimal.ZERO,
+class Balance(
+    user: User,
+    currentValue: BigDecimal
 ) {
     @Id
     @Column(name = "user_id", nullable = false, unique = true)
     val id: UUID = user.id
+    @MapsId
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    val user: User
+    @Column(name = "current_value", nullable = false)
+    var currentValue: BigDecimal = BigDecimal.ZERO
+
+    init {
+        this.user = user
+        this.currentValue = currentValue
+    }
 
     fun updateValue(valueToAdd: BigDecimal) {
         this.currentValue += valueToAdd
