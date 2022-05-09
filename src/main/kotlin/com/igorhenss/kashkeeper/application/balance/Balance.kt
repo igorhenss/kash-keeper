@@ -10,26 +10,22 @@ import javax.persistence.*
 @Entity
 @Table(name = "balance")
 class Balance(
-    user: User,
-    currentValue: BigDecimal
+    @MapsId
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    val user: User,
 ) {
     @Id
     @Column(name = "user_id", nullable = false, unique = true)
     val id: UUID = user.id
-    @MapsId
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    val user: User
     @Column(name = "current_value", nullable = false)
     var currentValue: BigDecimal = BigDecimal.ZERO
+    @OneToMany(mappedBy = "id", cascade = [CascadeType.ALL])
+    val history: MutableList<BalanceHistory> = mutableListOf()
 
-    init {
-        this.user = user
-        this.currentValue = currentValue
-    }
-
-    fun updateValue(valueToAdd: BigDecimal) {
-        this.currentValue += valueToAdd
+    fun updateValue(history: BalanceHistory) {
+        this.currentValue += history.addedValue
+        this.history.add(history)
     }
 
     override fun equals(other: Any?): Boolean {

@@ -9,7 +9,7 @@ import java.math.BigDecimal
 import java.util.*
 
 @Service
-class BalanceService(private val repository: BalanceRepository) {
+class BalanceService(private val adapter: BalanceAdapter, private val repository: BalanceRepository) {
 
     companion object {
         private const val USER_NOT_FOUND = "User [%s] not found."
@@ -17,7 +17,8 @@ class BalanceService(private val repository: BalanceRepository) {
 
     fun update(userId: UUID, dto: BalanceMutationDTO): BigDecimal {
         val balance = fetchById(userId)
-        balance.updateValue(dto.balance)
+        val history = adapter.fromDto(balance, dto)
+        balance.updateValue(history)
         return persist(balance).currentValue
     }
 

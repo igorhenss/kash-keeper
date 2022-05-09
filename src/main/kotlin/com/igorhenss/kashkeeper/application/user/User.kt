@@ -2,7 +2,6 @@ package com.igorhenss.kashkeeper.application.user
 
 import com.igorhenss.kashkeeper.application.balance.Balance
 import org.hibernate.Hibernate
-import java.math.BigDecimal
 import java.util.*
 import javax.persistence.*
 
@@ -11,7 +10,6 @@ import javax.persistence.*
 class User(
     username: String,
     surname: String,
-    balance: BigDecimal
 ) {
     @Id
     @Column(name = "id", nullable = false, unique = true)
@@ -27,7 +25,7 @@ class User(
     init {
         this.username = username.uppercase()
         this.surname = surname
-        this.balance = Balance(this, balance)
+        this.balance = Balance(this)
     }
 
     fun updateSurname(surname: String) {
