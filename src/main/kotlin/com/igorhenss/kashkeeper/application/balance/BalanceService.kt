@@ -17,12 +17,13 @@ class BalanceService(private val adapter: BalanceAdapter, private val repository
 
     fun update(userId: UUID, dto: BalanceMutationDTO): BigDecimal {
         val balance = fetchById(userId)
-        val history = adapter.fromDto(balance, dto)
+        val history = adapter.historyFromDto(balance, dto)
         balance.updateValue(history)
         return persist(balance).currentValue
     }
 
-    private fun fetchById(id: UUID) = repository.findByIdOrNull(id) ?: throw NotFoundException(USER_NOT_FOUND, "$id")
+    private fun fetchById(id: UUID) = repository.findById(id)
+        .orElseThrow { NotFoundException(USER_NOT_FOUND, "$id") }
 
     private fun persist(balance: Balance) = repository.save(balance)
 

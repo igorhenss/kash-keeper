@@ -5,16 +5,30 @@ import org.junit.jupiter.api.Test
 
 internal class UserTest {
 
-    private val user = User("TestUser", "Thusser")
+    companion object {
+        private const val USERNAME = "Test.User"
+        private const val SURNAME = "Surname"
+    }
+
+    private val user = User(USERNAME, SURNAME)
 
     @Test
-    fun testToString() {
-        assertThat("$user").isEqualTo("TESTUSER")
+    fun shouldReturnUsernameOnUppercase() {
+        assertThat("$user").isEqualTo(USERNAME.uppercase())
     }
 
     @Test
-    fun testEqualsByUsername() {
-        val differentUserWithSameUsername = User("TestUser", "Surname")
+    fun shouldUpdateSurname() {
+        assertThat(user.surname).isEqualTo(SURNAME)
+        val newSurname = "New Surname"
+        user.updateSurname(newSurname)
+        assertThat(user.surname).isEqualTo(newSurname)
+        assertThat(newSurname).isNotEqualTo(SURNAME)
+    }
+
+    @Test
+    fun shouldReturnEquals_whenTwoUsersHaveTheSameUsername() {
+        val differentUserWithSameUsername = User("Test.User", "Surname")
         assertThat(user.id).isNotEqualTo(differentUserWithSameUsername.id)
         assertThat(user).isEqualTo(differentUserWithSameUsername)
     }

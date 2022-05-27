@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service
 @Service
 class BalanceAdapter {
 
-    fun fromDto(balance: Balance, dto: BalanceMutationDTO) = BalanceHistory(
+    fun historyFromDto(balance: Balance, dto: BalanceMutationDTO) = BalanceHistory(
         balance = balance,
         title = dto.title,
         description = dto.description,
